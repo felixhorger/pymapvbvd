@@ -484,7 +484,7 @@ def mapVBVD(filename, quiet=False, **kwargs):
             # recover from read error
             for keys in currTwixObj:
                 if keys != 'hdr':
-                    currTwixObj[keys].tryAndFixLastMdh()
+                    currTwixObj[keys].tryAndFixLastMdh(quiet)
         else:
             for keys in currTwixObj:
                 if keys != 'hdr':

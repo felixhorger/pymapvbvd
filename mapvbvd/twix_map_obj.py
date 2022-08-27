@@ -365,14 +365,14 @@ class twix_map_obj:
 
         self.memPos = filePos[useScan]
 
-    def tryAndFixLastMdh(self):
+    def tryAndFixLastMdh(self, quiet):
         isLastAcqGood = False
         cnt = 0
 
         while not isLastAcqGood and self.NAcq > 0 and cnt < 100:
             try:
                 # self.clean()
-                self.unsorted(self.NAcq)
+                self.unsorted(self.NAcq, quiet)
                 isLastAcqGood = True
             except Exception:
                 logging.exception(f'An error occurred whilst trying to fix last MDH. NAcq = {self.NAcq:.0f}')
@@ -557,13 +557,13 @@ class twix_map_obj:
 
         return ixToRaw, ixToTarget
 
-    def unsorted(self, ival=None):
+    def unsorted(self, ival=None, quiet=False):
         # returns the unsorted data [NCol,NCha,#samples in acq. order]
         if ival:
             mem = np.atleast_1d(self.memPos[ival - 1])
         else:
             mem = self.memPos
-        out = self.readData(mem)
+        out = self.readData(mem, quiet=quiet)
         return out
 
     # Replicate matlab subscripting
@@ -678,7 +678,7 @@ class twix_map_obj:
         fid = open(self.fname, 'rb')
         return fid
 
-    def readData(self, mem, cIxToTarg=None, cIxToRaw=None, selRange=None, selRangeSz=None, outSize=None):
+    def readData(self, mem, cIxToTarg=None, cIxToRaw=None, selRange=None, selRangeSz=None, outSize=None, quiet=False):
 
         mem = mem.astype(int)
         if outSize is None:
@@ -754,7 +754,7 @@ class twix_map_obj:
 
         fid = self._fileopen()
 
-        for k in trange(kMax, desc='read data', leave=False):  # could loop over mem, but keep it similar to matlab
+        for k in (range(kMax) if quiet else trange(kMax, desc='read data', leave=False)):  # could loop over mem, but keep it similar to matlab
             # skip scan header
             fid.seek(mem[k] + szScanHeader, 0)
             raw = np.fromfile(fid, dtype=np.float32, count=readSize.prod()).reshape(
