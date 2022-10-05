@@ -174,13 +174,13 @@ class twix_map_obj:
 
     def __init__(self, dataType, fname, version, rstraj=None, **kwargs):
         self.ignoreROoffcenter = kwargs.get('ignoreROoffcenter', False)
-        self.removeOS = kwargs.get('removeOS', True)
-        self.regrid = kwargs.get('regrid', True)
+        self.removeOS = kwargs.get('removeOS', False)
+        self.regrid = kwargs.get('regrid', False)
         self.doAverage = kwargs.get('doAverage', False)
         self.averageReps = kwargs.get('averageReps', False)
         self.averageSets = kwargs.get('averageSets', False)
         self.ignoreSeg = kwargs.get('ignoreSeg', False)
-        self.squeeze = kwargs.get('squeeze', False)
+        self.squeeze = kwargs.get('squeeze', True)
 
         self.dType = dataType.lower()
         self.fname = fname
