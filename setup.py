@@ -2,17 +2,22 @@
 
 import setuptools
 import versioneer
-import yaml
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-with open("requirements.yml", "r") as stream:
-    try:
-        requirements = yaml.safe_load(stream)
-        install_requires = requirements['dependencies']
-    except yaml.YAMLError as exc:
-        print(exc)
+install_requires = [
+	"numpy",
+	"tqdm",
+	"dataclasses",
+	"scipy",
+	"matplotlib",
+	"setuptools",
+	"pyyaml",
+	"pytest",
+	"h5py",
+	"six"
+]
 
 # A horrible hack -  I can't get the requirments.yml to work
 # with the dataclass dependency for 3.6
